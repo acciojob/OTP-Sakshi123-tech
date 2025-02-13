@@ -1,44 +1,23 @@
-//your JS code here. If required.
-document.addEventListener("DOMContentLoaded", () => {
-  const codeInputs = document.querySelectorAll('.code');
+// Select all the OTP input fields
+const inputs = document.querySelectorAll('.code');
 
-  // Function to move focus to the next input
-  function moveFocusToNext(currentInput) {
-    let nextInput = currentInput.nextElementSibling;
-    if (nextInput) {
-      nextInput.focus();
-    }
-  }
-
-  // Function to move focus to the previous input
-  function moveFocusToPrevious(currentInput) {
-    let previousInput = currentInput.previousElementSibling;
-    if (previousInput) {
-      previousInput.focus();
-    }
-  }
-
-  // Event listener for handling keyup events on input fields
-  codeInputs.forEach(input => {
-    input.addEventListener('keyup', (event) => {
-      if (event.key === 'Backspace') {
-        if (input.value === '') {
-          // Move focus to the previous input if current input is empty
-          moveFocusToPrevious(input);
-        }
-      } else if (event.key >= '0' && event.key <= '9') {
-        if (input.value !== '') {
-          // Move focus to the next input field after a digit is typed
-          moveFocusToNext(input);
-        }
-      }
-    });
-
-    // Automatically focus the next input when the user types in the current one
+// Add event listeners for input fields
+inputs.forEach((input, index) => {
+    // When the user types something
     input.addEventListener('input', () => {
-      if (input.value !== '') {
-        moveFocusToNext(input);
-      }
+        if (input.value) {
+            // Focus the next input field
+            if (index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+        }
     });
-  });
+
+    // When the user presses backspace
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && index > 0) {
+            // Focus the previous input field if backspace is pressed and the current field is empty
+            inputs[index - 1].focus();
+        }
+    });
 });
